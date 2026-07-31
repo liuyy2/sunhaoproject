@@ -1,0 +1,16 @@
+displayName: CIFAR-100
+labelTypes:
+- Classification
+license:
+- Unknown
+mediaTypes:
+- Image
+paperUrl: https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf
+publishDate: "2009-04-08"
+publishUrl: http://www.cs.toronto.edu/~kriz/cifar.html
+publisher:
+- Massachusetts Institute of Technology
+- New York University
+tags: []
+taskTypes:
+- Image Classification

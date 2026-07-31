@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local agent metadata
+.agents/
+.codex/
+
+# Downloaded datasets
+CIFAR-10/data/
+CIFAR-100/raw/
+CIFAR-100/dsdl/*.zip
+# Dataset source repositories have their own broad Git LFS rules.
+CIFAR-10/.gitattributes
+CIFAR-100/.gitattributes
+
+# Generated training artifacts
+weights/
+features/*.npz
+CIFAR-10/runs/
+runs/
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+events.out.tfevents.*
+
+# Generated figures and local scratch files
+*.log
+*.tmp
+*.bak
+
+# Keep lightweight, reviewable experiment metadata under results/
+results/*
+!results/*.json

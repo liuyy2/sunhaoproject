@@ -1,0 +1,10 @@
+torch
+torchvision
+timm
+loralib
+numpy
+scikit-learn
+scipy
+# faiss-cpu
+matplotlib
+tqdm
