@@ -48,6 +48,72 @@ def kmeans_labels(features, clusters, seed):
     ).fit_predict(features)
 
 
+def balanced_kmeans_logits(logits, reference_predictions, clusters, seed):
+    kmeans = KMeans(
+        n_clusters=clusters,
+        n_init=50,
+        random_state=seed,
+    ).fit(logits)
+    cluster_labels = kmeans.labels_
+    contingency = np.zeros((clusters, clusters), dtype=np.int64)
+    np.add.at(contingency, (cluster_labels, reference_predictions), 1)
+    rows, columns = linear_sum_assignment(contingency.max() - contingency)
+    cluster_to_class = np.empty(clusters, dtype=np.int64)
+    cluster_to_class[rows] = columns
+
+    distances = kmeans.transform(logits)
+    semantic_scores = np.empty_like(distances)
+    for cluster_id, class_id in enumerate(cluster_to_class):
+        semantic_scores[:, class_id] = -distances[:, cluster_id]
+    return balanced_prior_labels(semantic_scores, examples_per_class=1000), cluster_labels
+
+
+def balanced_prior_labels(logits, examples_per_class):
+    """Apply the known CIFAR-10 class prior with low-margin reassignment."""
+    sample_count, class_count = logits.shape
+    if sample_count != class_count * examples_per_class:
+        raise ValueError(
+            "Balanced prior requires sample_count == class_count * examples_per_class."
+        )
+
+    assignment = logits.argmax(axis=1)
+    counts = np.bincount(assignment, minlength=class_count)
+    surplus = np.maximum(counts - examples_per_class, 0)
+    deficit = np.maximum(examples_per_class - counts, 0)
+    candidates = []
+    for source_class in np.flatnonzero(surplus):
+        source_indices = np.flatnonzero(assignment == source_class)
+        for target_class in np.flatnonzero(deficit):
+            penalties = (
+                logits[source_indices, source_class]
+                - logits[source_indices, target_class]
+            )
+            candidates.extend(
+                (float(penalty), int(index), int(source_class), int(target_class))
+                for penalty, index in zip(penalties, source_indices, strict=True)
+            )
+
+    moved = np.zeros(sample_count, dtype=bool)
+    for _, index, source_class, target_class in sorted(candidates):
+        if surplus.sum() == 0:
+            break
+        if (
+            moved[index]
+            or surplus[source_class] == 0
+            or deficit[target_class] == 0
+        ):
+            continue
+        assignment[index] = target_class
+        moved[index] = True
+        surplus[source_class] -= 1
+        deficit[target_class] -= 1
+
+    counts = np.bincount(assignment, minlength=class_count)
+    if not np.all(counts == examples_per_class):
+        raise RuntimeError(f"Balanced assignment returned invalid counts: {counts}")
+    return assignment
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Leakage-controlled stage 3 clustering evaluation."
@@ -90,14 +156,28 @@ def main():
         raise ValueError("The fixed CIFAR-10 protocol requires exactly 10 clusters.")
 
     # All predictions are produced before labels enter metric computation.
+    balanced_kmeans_predictions, kmeans_logits_predictions = balanced_kmeans_logits(
+        logits,
+        predictions,
+        args.clusters,
+        args.seed,
+    )
     predicted = {
         "EMAClassifier": (predictions, True),
+        "BalancedPrior-Logits": (
+            balanced_prior_labels(logits, examples_per_class=1000),
+            True,
+        ),
+        "BalancedKMeans-Logits": (
+            balanced_kmeans_predictions,
+            True,
+        ),
         "KMeans-Backbone": (
             kmeans_labels(features, args.clusters, args.seed),
             False,
         ),
         "KMeans-Logits": (
-            kmeans_labels(logits, args.clusters, args.seed),
+            kmeans_logits_predictions,
             False,
         ),
         "KMeans-Probabilities": (

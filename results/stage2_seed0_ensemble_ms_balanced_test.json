@@ -1,0 +1,53 @@
+{
+  "protocol": {
+    "dataset": "cifar10",
+    "test_size": 10000,
+    "labels_used_for_training": 500,
+    "seed": 0,
+    "anchors": 1000,
+    "anchor_neighbors": 3
+  },
+  "feature_metadata": {
+    "checkpoint": "weights\\stage2_seed0\\latest.pth",
+    "checkpoint_epoch": 100,
+    "checkpoint_stage": "stage2_semi",
+    "weights": "ensemble",
+    "split": "test",
+    "tta_flip": true,
+    "tta_scales": [
+      224,
+      240,
+      256
+    ],
+    "ensemble_members": 2,
+    "feature_normalized": true,
+    "test_labels_used_during_extraction": false
+  },
+  "results": {
+    "EMAClassifier": {
+      "ACC": 0.9809,
+      "NMI": 0.9537366597659154,
+      "ARI": 0.9585870399553289
+    },
+    "BalancedPrior-Logits": {
+      "ACC": 0.9812,
+      "NMI": 0.9539265495131578,
+      "ARI": 0.9592419807807808
+    },
+    "KMeans-Backbone": {
+      "ACC": 0.9796,
+      "NMI": 0.9511501727508679,
+      "ARI": 0.9558534524977761
+    },
+    "KMeans-Logits": {
+      "ACC": 0.981,
+      "NMI": 0.9542370759356146,
+      "ARI": 0.9587906103501463
+    },
+    "KMeans-Probabilities": {
+      "ACC": 0.9809,
+      "NMI": 0.9537366597659154,
+      "ARI": 0.9585870399553289
+    }
+  }
+}
