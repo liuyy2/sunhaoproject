@@ -1,0 +1,58 @@
+{
+  "protocol": {
+    "dataset": "cifar10",
+    "test_size": 10000,
+    "labels_used_for_training": 500,
+    "seed": 2,
+    "anchors": 1000,
+    "anchor_neighbors": 3
+  },
+  "feature_metadata": {
+    "checkpoint": "D:\\Project\\Project\\VScode\\youyong-main\\weights\\stage2_seed2\\latest.pth",
+    "checkpoint_epoch": 100,
+    "checkpoint_stage": "stage2_semi",
+    "weights": "ensemble",
+    "split": "test",
+    "tta_flip": true,
+    "tta_scales": [
+      224,
+      240,
+      256
+    ],
+    "ensemble_members": 2,
+    "feature_normalized": true,
+    "test_labels_used_during_extraction": false
+  },
+  "results": {
+    "EMAClassifier": {
+      "ACC": 0.978,
+      "NMI": 0.9492216677914803,
+      "ARI": 0.9525050102958116
+    },
+    "BalancedPrior-Logits": {
+      "ACC": 0.978,
+      "NMI": 0.9477081084320572,
+      "ARI": 0.9524340752752752
+    },
+    "BalancedKMeans-Logits": {
+      "ACC": 0.9775,
+      "NMI": 0.9460368496226609,
+      "ARI": 0.95129505005005
+    },
+    "KMeans-Backbone": {
+      "ACC": 0.9777,
+      "NMI": 0.9483241369076247,
+      "ARI": 0.9518889337457775
+    },
+    "KMeans-Logits": {
+      "ACC": 0.978,
+      "NMI": 0.9492297401622499,
+      "ARI": 0.952426120725834
+    },
+    "KMeans-Probabilities": {
+      "ACC": 0.978,
+      "NMI": 0.9492216677914801,
+      "ARI": 0.9525050102958116
+    }
+  }
+}

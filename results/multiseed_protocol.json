@@ -1,0 +1,23 @@
+{
+  "seeds": [
+    2,
+    3,
+    4
+  ],
+  "shared_stage1_checkpoint": "./weights/stage1_seed0/latest.pth",
+  "shared_stage1_seed": 0,
+  "stage2_epochs": 100,
+  "labels_per_seed": 500,
+  "labels_per_class": 50,
+  "evaluation": {
+    "weights": "ema_student_ensemble",
+    "tta_scales": [
+      224,
+      240,
+      256
+    ],
+    "tta_flip": true,
+    "primary_method": "BalancedKMeans-Logits",
+    "known_test_class_prior": 1000
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "method": "KMeans-Logits",
+  "requested_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "completed_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "missing_files": [],
+  "complete": true,
+  "per_seed": [
+    {
+      "seed": 0,
+      "ACC": 0.981,
+      "NMI": 0.9542370759356146,
+      "ARI": 0.9587906103501463
+    },
+    {
+      "seed": 1,
+      "ACC": 0.9778,
+      "NMI": 0.9477823600424935,
+      "ARI": 0.951919310148675
+    },
+    {
+      "seed": 2,
+      "ACC": 0.978,
+      "NMI": 0.9492297401622499,
+      "ARI": 0.952426120725834
+    },
+    {
+      "seed": 3,
+      "ACC": 0.9781,
+      "NMI": 0.9496773106634688,
+      "ARI": 0.9527846452234776
+    },
+    {
+      "seed": 4,
+      "ACC": 0.9787,
+      "NMI": 0.9495331213504125,
+      "ARI": 0.9537405213699598
+    }
+  ],
+  "aggregate": {
+    "ACC": {
+      "mean": 0.97872,
+      "std": 0.0013179529581893263,
+      "target": 0.981,
+      "mean_pass": false
+    },
+    "NMI": {
+      "mean": 0.9500919216308479,
+      "std": 0.0024363854289298783,
+      "target": 0.954,
+      "mean_pass": false
+    },
+    "ARI": {
+      "mean": 0.9539322415636186,
+      "std": 0.002796326792318109,
+      "target": 0.959,
+      "mean_pass": false
+    }
+  },
+  "all_targets_pass": false,
+  "protocol_note": "Stage 1 seed 0 is shared. Stage 2 and the 1% labeled split vary by seed."
+}
